@@ -13,12 +13,15 @@ from app.core.constant_variables import (
 )
 from app.modules.auth.models.user.base_user import BaseUser
 
-class Talent(Base):
-    __tablename__ = "talent"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    profile_id: Mapped[int] = mapped_column(
+class TalentModel(Base):
+    __tablename__ = "talents"
+    id: Mapped[str] = mapped_column(
+        String(STRING_LENGTH_32),
+        primary_key=True
+    )
+    profile_id: Mapped[str] = mapped_column(
         ForeignKey("base_user.id", ondelete="SET NULL"),
         unique=True,
         nullable=False
     )
-    profile: Mapped["BaseUser"] = relationship()
+    profile: Mapped["BaseUser"] = relationship(back_populates="talent")

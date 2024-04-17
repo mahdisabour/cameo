@@ -13,15 +13,18 @@ from app.core.constant_variables import (
 )
 from app.modules.auth.models.user.base_user import BaseUser
 
-class User(Base):
-    __tablename__ = "user"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    profile_id: Mapped[int] = mapped_column(
+class UserModel(Base):
+    __tablename__ = "users"
+    id: Mapped[str] = mapped_column(
+        String(STRING_LENGTH_32),
+        primary_key=True
+    )
+    profile_id: Mapped[str] = mapped_column(
         ForeignKey("base_user.id", ondelete="SET NULL"),
         unique=True,
         nullable=False
     )
-    profile: Mapped["BaseUser"] = relationship()
+    profile: Mapped["BaseUser"] = relationship(back_populates="user")
     bio: Mapped[str] = mapped_column(
         String(STRING_LENGTH_64),
         nullable=True

@@ -15,7 +15,10 @@ from app.core.constant_variables import (
 class BaseUser(Base):
     __tablename__ = "base_user"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[str] = mapped_column(
+        String(STRING_LENGTH_32),
+        primary_key=True
+    )
     username: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
         unique=True,
