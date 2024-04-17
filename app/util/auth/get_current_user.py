@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.db.session import get_session
-from app.modules.auth.models.user.user import UserModel
+from app.modules.auth.models.user.base_user import UserModel
 from app.modules.auth.schemas.user import TokenData
 from app.modules.auth.services.user import UserRepository
 from app.util.exceptions import AuthenticationFailed

@@ -37,7 +37,7 @@ services:
     expose:
       - "5432"
     ports:
-      - "5432"
+      - "5432:5432"
     restart: on-failure
     healthcheck:
       test: "PGPASSWORD=password pg_isready -h 127.0.0.1 -U cameo -d db"
