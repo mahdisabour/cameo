@@ -19,7 +19,7 @@ class Category(Base):
         primary_key=True
     )
     parent: Mapped[str] = mapped_column(
-        ForeignKey("base_user.id", ondelete="SET NULL"),
+        ForeignKey("accounts.id", ondelete="SET NULL"),
         nullable=True
     )
     name: Mapped[str] = mapped_column(

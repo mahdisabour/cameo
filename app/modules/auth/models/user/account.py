@@ -4,6 +4,7 @@ from sqlalchemy import (
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 from app.core.constant_variables import (
@@ -12,8 +13,8 @@ from app.core.constant_variables import (
 ) 
 
 
-class BaseUser(Base):
-    __tablename__ = "base_user"
+class Account(Base):
+    __tablename__ = "accounts"
 
     id: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
@@ -22,22 +23,19 @@ class BaseUser(Base):
     username: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
         unique=True,
-        nullable=False
     )
-    name: Mapped[str] = mapped_column(
+    name: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_32),
         unique=False,
-        nullable=True
     )
-    email: Mapped[str] = mapped_column(
+    email: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_32),
         unique=True,
-        nullable=True
     )
-    phone_number: Mapped[str] = mapped_column(
+    phone_number: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_32),
-        unique=True,
-        nullable=True
     ) 
     avatar: Mapped[str] = mapped_column(String(STRING_LENGTH_32))
-
+    user: Mapped["User"] = relationship(back_populates="account")
+    talent: Mapped["Talent"] = relationship(back_populates="account")
+    
