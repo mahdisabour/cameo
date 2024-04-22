@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class OrmModeBaseModel(BaseModel):
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserType(str, Enum):

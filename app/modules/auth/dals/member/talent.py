@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.util.crud.base import CRUDBase
-from app.modules.auth.models.user.talent import TalentModel
+from app.modules.auth.models.member.talent import TalentModel
 
 
 class TalentDAL(CRUDBase[TalentModel, TalentModel, TalentModel]):

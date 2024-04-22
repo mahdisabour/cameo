@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.util.crud.base import CRUDBase
-from app.modules.auth.models.user.account import Account
+from app.modules.auth.models.member.account import Account
 
 
 class AccountDAL(CRUDBase[Account, Account, Account]):

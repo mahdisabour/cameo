@@ -15,8 +15,8 @@ from app.core.constant_variables import (
     STRING_LENGTH_32,
     STRING_LENGTH_64
 )
-from app.modules.auth.models.user.account import Account
-from app.modules.auth.schemas.user import (
+from app.modules.auth.models.member.account import Account
+from app.modules.auth.schemas.member.user import (
     UserType, 
     SocialMedia,
     FollowerCount

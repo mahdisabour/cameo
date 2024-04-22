@@ -6,9 +6,9 @@ from sqlalchemy.sql.expression import select
 
 from app.core.config import get_settings
 from app.db.session import get_session
-from app.modules.auth.models.user.account import Account
-from app.modules.auth.schemas.user import TokenData
-from app.modules.auth.dals.user.account import AccountDAL
+from app.modules.auth.models.member.account import Account
+from app.modules.auth.schemas.member.user import TokenData
+from app.modules.auth.dals.member.account import AccountDAL
 from app.util.exceptions import AuthenticationFailed
 
 SETTINGS = get_settings()
