@@ -16,8 +16,10 @@ from app.core.constant_variables import (
     STRING_LENGTH_64
 )
 from app.modules.auth.models.member.account import Account
-from app.modules.auth.schemas.member.user import (
-    UserType, 
+from app.modules.auth.schemas.member.account import (
+    UserType
+)
+from app.modules.auth.schemas.member.talent import (
     SocialMedia,
     FollowerCount
 )
@@ -42,10 +44,6 @@ class TalentModel(Base):
     display_name: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_32),
     )
-    date_of_birth: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-    )
     country: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
     )
@@ -57,5 +55,14 @@ class TalentModel(Base):
     referal_code: Mapped[str | None]    
     description: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_64)
+    )
+    time_created: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    time_updated: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.current_timestamp(),
     )
 
