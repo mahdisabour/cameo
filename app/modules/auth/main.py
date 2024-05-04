@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from .routes.group import group_router
+from app.modules.auth.routes.member import member_router
 
 auth_router = APIRouter(prefix="/auth")
 
-auth_router.include_router(user_router)
+auth_router.include_router(member_router)

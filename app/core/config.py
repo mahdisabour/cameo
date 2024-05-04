@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "9cb762ea2b00298a069fd05ee2662f9b031b71a4cdde32bb971943e3e384f06d"
     PREFIX: str = "/api"
     ALGORITHM: str = "HS256"
+    OTP_LEN = 5
+    OTP_EXPIRATION_TIMEDELTA = 60
 
     class Config:
         env_file = ".env"
