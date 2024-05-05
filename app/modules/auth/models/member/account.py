@@ -30,7 +30,7 @@ class Account(Base):
         String(STRING_LENGTH_32),
         unique=False,
     )
-    email: Mapped[str | None] = mapped_column(
+    email: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
         unique=True,
     )
@@ -40,7 +40,7 @@ class Account(Base):
     date_of_birth: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
     )
-    avatar: Mapped[str] = mapped_column(String(STRING_LENGTH_32))
+    avatar: Mapped[str | None] = mapped_column(String(STRING_LENGTH_32))
     time_created: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -50,6 +50,6 @@ class Account(Base):
         server_default=func.now(),
         onupdate=func.current_timestamp(),
     )
-    user: Mapped["User"] = relationship(back_populates="account")
-    talent: Mapped["Talent"] = relationship(back_populates="account")
+    # user = relationship("UserModel", back_populates="account")
+    # talent = relationship("TalentModel", back_populates="account")
     

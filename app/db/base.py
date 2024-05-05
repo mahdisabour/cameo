@@ -8,3 +8,5 @@ from app.modules.auth.models.member.talent import TalentModel
 # CATEGORY
 from app.modules.auth.models.category import Category
 
+# OTP
+from app.modules.auth.models.otp import OTPModel

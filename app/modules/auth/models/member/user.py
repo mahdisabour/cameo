@@ -13,6 +13,8 @@ from app.core.constant_variables import (
     STRING_LENGTH_32,
     STRING_LENGTH_64
 )
+from app.modules.auth.models.member.account import Account
+
 
 class UserModel(Base):
     __tablename__ = "users"
@@ -21,7 +23,7 @@ class UserModel(Base):
         primary_key=True
     )
     account_id: Mapped[str | None] = mapped_column(
-        ForeignKey("accounts.id", ondelete="SET NULL"),
+        ForeignKey("accounts.id", ondelete="CASCADE"),
     )
     bio: Mapped[str | None] = mapped_column(
         String(STRING_LENGTH_64),
@@ -35,4 +37,4 @@ class UserModel(Base):
         server_default=func.now(),
         onupdate=func.current_timestamp(),
     )
-    account: Mapped["Account"] = relationship(back_populates="user")
+    account: Mapped["Account"] = relationship()

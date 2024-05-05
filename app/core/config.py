@@ -2,8 +2,8 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DB_URL: str = "postgresql+asyncpg://cameo:password@db:5432/db"
-    SYNC_DB_URL: str = "postgresql://cameo:password@db:5432/db"
+    DB_URL: str = "postgresql+asyncpg://cameo:password@localhost:5432/db"
+    SYNC_DB_URL: str = "postgresql://cameo:password@localhost:5432/db"
     DB_DEBUG: bool = False
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 260000
     SECRET_KEY: str = "9cb762ea2b00298a069fd05ee2662f9b031b71a4cdde32bb971943e3e384f06d"

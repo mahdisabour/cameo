@@ -6,15 +6,24 @@ from sqlalchemy.orm import Session
 
 from app.modules.auth.services.member.account import AccountRepository
 from app.modules.auth.services.otp import OTPRepository
-from app.modules.auth.schemas.otp import OTPCreateSchema
-from app.db.session import get_session
-
+from app.modules.auth.services.member.user import UserRepository
+from app.modules.auth.schemas.member.account import (
+    AccountCreateSchema,
+    Token
+)
 from app.modules.auth.schemas.member.account import (
     AccountEmailStatus,
     CheckOTPPostSchema
 )
+from app.modules.auth.schemas.otp import OTPCreateSchema
+from app.util.auth.jwt import (
+    create_access_token,
+    create_refresh_token
+)
+from app.core.config import get_settings
+from app.db.session import get_session
 
-
+SETTINGS = get_settings()
 member_router = APIRouter(tags=["Member"], prefix="/members")
 
 
@@ -56,8 +65,29 @@ async def check_otp(
     
 
 
-@member_router.post("/sign-up", status_code=201)
+@member_router.post("/user/sign-up", status_code=201, response_model=Token)
 async def register_user(
+    data: AccountCreateSchema,
     db: Session = Depends(get_session),
 ):
-    pass
+    await UserRepository.create(
+        db=db,
+        data=data
+    )
+    # creating access and refresh token
+    access_token_expires = timedelta(minutes=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": data.email},
+        expires_delta=access_token_expires,
+    )
+    refresh_token_expire = timedelta(minutes=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES * 4)
+    refresh_token = create_refresh_token(
+        data={"sub": data.email},
+        expires_delta=refresh_token_expire,
+    )
+    return Token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        expire=SETTINGS.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        token_type="bearer",
+    )

@@ -15,7 +15,6 @@ from app.core.constant_variables import (
     STRING_LENGTH_32,
     STRING_LENGTH_64
 )
-from app.modules.auth.models.member.account import Account
 from app.modules.auth.schemas.member.account import (
     UserType
 )
@@ -23,6 +22,7 @@ from app.modules.auth.schemas.member.talent import (
     SocialMedia,
     FollowerCount
 )
+from app.modules.auth.models.member.account import Account
 
 class TalentModel(Base):
     __tablename__ = "talents"
@@ -34,10 +34,9 @@ class TalentModel(Base):
         default=UserType.USER, 
     )
     account_id: Mapped[str] = mapped_column(
-        ForeignKey("accounts.id", ondelete="SET NULL"),
+        ForeignKey("accounts.id", ondelete="CASCADE"),
         unique=True,
     )
-    account: Mapped["Account"] = relationship(back_populates="talent")
     legal_name: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
     )
@@ -65,4 +64,5 @@ class TalentModel(Base):
         server_default=func.now(),
         onupdate=func.current_timestamp(),
     )
+    account: Mapped["Account"] = relationship()
 

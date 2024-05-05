@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import (Any, Dict, Generic, List, Optional, Tuple, Type, TypeVar,
                     Union)
 
@@ -55,7 +56,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         obj_in: CreateSchemaType,
         autocommit: bool = True,
     ) -> ModelType:
-        obj_in_data = jsonable_encoder(obj_in)
+        obj_in_data = jsonable_encoder(
+            obj_in,
+            custom_encoder={datetime: lambda obj: obj}
+        )
         db_obj: ModelType = self.model(**obj_in_data)
         self.db.add(db_obj)
         if autocommit:
@@ -65,7 +69,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             except IntegrityError as exc:
                 await self.db.rollback()
                 raise CustomDatabaseError(str(exc.orig))
-            except Exception:
+            except Exception as e:
+                print(f"{e=}")
                 raise Exception("internal server error")
         return db_obj
     

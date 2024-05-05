@@ -2,7 +2,6 @@ from enum import Enum
 from uuid import uuid4
 from datetime import datetime
 
-from typing_extensions import Annotated
 from pydantic import BaseModel, Field
 
 
@@ -45,14 +44,14 @@ class TokenData(BaseModel):
 
 class AccountBaseSchema(OrmModeBaseModel):
     username: str
+    email: str 
     date_of_birth: datetime
-    name: str | None = None
-    email: str | None = None
     phone_number: str | None = None
+    name: str | None = None
 
 
 class AccountCreateSchema(AccountBaseSchema):
-    id: Annotated[str, Field(default_factory=lambda: uuid4().hex)]
+    ...
 
 
 class AccountGetSchema(AccountBaseSchema):
