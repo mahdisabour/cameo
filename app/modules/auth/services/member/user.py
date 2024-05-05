@@ -14,18 +14,21 @@ class UserRepository:
         db: Session,
         data: AccountCreateSchema
     ) -> None:
-        account: Account = await AccountDAL(db=db).create(
-            obj_in=Account(
-                id=str(uuid4().hex),
-                **data.model_dump()
-            ),
-            autocommit=False
-        )
-        _: UserModel = await UserDAL(db=db).create(
-            obj_in=UserModel(
-                id=str(uuid4().hex),
-                account_id=account.id
-            ),
-            autocommit=True
-        )
+        async with db.begin():
+            account: Account = await AccountDAL(db=db).create(
+                obj_in=Account(
+                    id=str(uuid4().hex),
+                    **data.model_dump()
+                ),
+                autocommit=False
+            )
+            await db.flush()
+            
+            _: UserModel = await UserDAL(db=db).create(
+                obj_in=UserModel(
+                    id=str(uuid4().hex),
+                    account_id=account.id
+                ),
+                autocommit=False
+            )
 

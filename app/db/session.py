@@ -23,11 +23,8 @@ async_session = sessionmaker(
 
 
 async def get_session():
-    async with async_session() as session:
-        try:
-            yield session
-        except IntegrityError as exc:
-                await session.rollback()
-                raise CustomDatabaseError(str(exc.orig))
-        finally:
-            await session.close()
+    session: Session = async_session()
+    try:
+        yield session
+    finally:
+        await session.close()
