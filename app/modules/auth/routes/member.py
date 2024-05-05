@@ -5,24 +5,27 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app.modules.auth.models.member.account import Account
+from app.modules.auth.models.otp import OTPModel
 from app.modules.auth.services.member.account import AccountRepository
 from app.modules.auth.services.otp import OTPRepository
 from app.modules.auth.services.member.user import UserRepository
 from app.modules.auth.schemas.member.account import (
     AccountCreateSchema,
+    AccountEmailStatus,
     Token
 )
-from app.modules.auth.schemas.member.account import (
-    AccountEmailStatus,
-    CheckOTPPostSchema
+from app.modules.auth.schemas.otp import (
+    CheckOTPPostSchema,
+    OTPCreateSchema,
+    OTPValidationSchema
 )
-from app.modules.auth.schemas.otp import OTPCreateSchema
 from app.util.auth.jwt import (
     create_access_token,
     create_refresh_token
 )
 from app.core.config import get_settings
 from app.db.session import get_session
+
 
 SETTINGS = get_settings()
 member_router = APIRouter(tags=["Member"], prefix="/members")
@@ -56,12 +59,24 @@ async def request_otp(
     )
 
 
-@member_router.post("/check-OTP", status_code=200)
+@member_router.post("/check-OTP", status_code=200, response_model=OTPValidationSchema)
 async def check_otp(
     otp_data: CheckOTPPostSchema,
     db: Session = Depends(get_session),
 ):
-    pass
+    if (otp:= await OTPRepository.get_by_options(
+            db=db,
+            options=[
+                OTPModel.otp_code==otp_data.otp,
+                OTPModel.account_email_fk==otp_data.email
+            ]
+        )
+    ):
+        return otp
+    return OTPValidationSchema(
+        valid=False
+    )
+        
     
 
 

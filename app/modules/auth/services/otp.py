@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import select
 
 from app.modules.auth.models.otp import OTPModel
 from app.modules.auth.schemas.otp import OTPCreateSchema
@@ -15,4 +16,15 @@ class OTPRepository:
                 **otp_create_schema.model_dump()
             ),
             autocommit=True
+        )
+
+    @staticmethod
+    async def get_by_options(
+        db: Session,
+        options: list = []
+    ) -> OTPModel:
+        return await OTPDAL(db=db).get_by_clause(
+            clause=(select(OTPModel).where(
+                *options
+            ))
         )

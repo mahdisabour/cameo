@@ -64,8 +64,3 @@ class AccountUpdateSchema(AccountBaseSchema):
 
 class AccountEmailStatus(BaseModel):
     exist: bool = False
-
-
-class CheckOTPPostSchema(BaseModel):
-    otp: int
-    email: str

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     String,
@@ -7,7 +7,6 @@ from sqlalchemy import (
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import relationship
 from sqlalchemy.orm import mapped_column
 
 from app.db.base_class import Base
@@ -34,7 +33,7 @@ class OTPModel(Base):
 
     @hybrid_property
     def valid(self) -> bool:
-        if self.expiration_time < datetime.now():
+        if self.expiration_time > datetime.now(timezone.utc):
             return True
         return False
 

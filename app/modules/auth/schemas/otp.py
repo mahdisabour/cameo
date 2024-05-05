@@ -1,6 +1,6 @@
 from random import randint
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from pydantic import BaseModel, Field
 
@@ -27,3 +27,12 @@ class OTPCreateSchema(OTPBaseSchema):
     id: str = Field(default_factory=lambda: uuid4().hex)
     expiration_time: datetime = Field(
         default_factory=lambda: datetime.now() + timedelta(seconds=get_settings().OTP_EXPIRATION_TIMEDELTA))
+    
+
+class OTPValidationSchema(OrmModeBaseModel):
+    valid: bool
+
+
+class CheckOTPPostSchema(BaseModel):
+    otp: int
+    email: str

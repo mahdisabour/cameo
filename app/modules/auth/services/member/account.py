@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import select
-from sqlalchemy.sql.selectable import Select
 
 from app.modules.auth.models.member.account import Account
 from app.modules.auth.dals.member.account import AccountDAL
