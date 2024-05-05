@@ -21,7 +21,7 @@ from app.modules.auth.main import auth_router
 
 def get_application() -> FastAPI:
     application = FastAPI(
-        version="1.0.0", title="cameo", dependencies=[Depends(get_session)]
+        version=get_settings().VERSION, title="cameo", dependencies=[Depends(get_session)]
     )
     application.include_router(auth_router, prefix=get_settings().PREFIX)
     return application

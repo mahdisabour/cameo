@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     OTP_LEN: int = 5
     OTP_EXPIRATION_TIMEDELTA: int = 60
+    VERSION: str = "1.0.0"
 
     class Config:
         env_file = ".env"
