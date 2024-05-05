@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.modules.auth.models.otp import OTPModel
 from app.modules.auth.schemas.otp import OTPCreateSchema
 from app.modules.auth.dals.otp import OTPDAL
 
@@ -10,6 +11,8 @@ class OTPRepository:
         otp_create_schema: OTPCreateSchema
     ) -> None:
         await OTPDAL(db=db).create(
-            obj_in=otp_create_schema,
+            obj_in=OTPModel(
+                **otp_create_schema.model_dump()
+            ),
             autocommit=True
         )

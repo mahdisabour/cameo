@@ -10,7 +10,7 @@ class AccountRepository:
     @staticmethod
     async def get_by_options(
         db: Session,
-        options: dict[str, str | int] = {},
+        options: list = [],
     ) -> Account | None:
         account = await AccountDAL(db=db).get_by_clause(
             clause=(select(Account).where(

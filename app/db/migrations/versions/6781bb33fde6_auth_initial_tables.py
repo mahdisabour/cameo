@@ -1,15 +1,15 @@
 """auth_initial_tables
 
-Revision ID: 2d455060ac32
+Revision ID: 6781bb33fde6
 Revises: 
-Create Date: 2024-05-05 13:09:13.833642
+Create Date: 2024-05-05 18:32:39.913793
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 
-revision = '2d455060ac32'
+revision = '6781bb33fde6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,6 +31,7 @@ def upgrade() -> None:
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    op.create_index('email_idx', 'accounts', ['email'], unique=False)
     op.create_table('category',
     sa.Column('id', sa.String(length=32), nullable=False),
     sa.Column('parent', sa.String(length=32), nullable=True),
@@ -40,10 +41,10 @@ def upgrade() -> None:
     )
     op.create_table('otps',
     sa.Column('id', sa.String(length=32), nullable=False),
-    sa.Column('account_id', sa.String(length=32), nullable=False),
+    sa.Column('account_email_fk', sa.String(length=32), nullable=False),
     sa.Column('otp_code', sa.Integer(), nullable=False),
     sa.Column('expiration_time', sa.DateTime(timezone=True), nullable=False),
-    sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['account_email_fk'], ['accounts.email'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('talents',
@@ -82,5 +83,6 @@ def downgrade() -> None:
     op.drop_table('talents')
     op.drop_table('otps')
     op.drop_table('category')
+    op.drop_index('email_idx', table_name='accounts')
     op.drop_table('accounts')
     # ### end Alembic commands ###

@@ -63,7 +63,6 @@ class AccountUpdateSchema(AccountBaseSchema):
 
 
 class AccountEmailStatus(BaseModel):
-    account_id: str | None = None
     exist: bool = False
 
 

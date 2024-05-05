@@ -3,6 +3,7 @@ from sqlalchemy import (
     DateTime
 )
 from sqlalchemy import ForeignKey
+from sqlalchemy import Index
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
@@ -50,6 +51,6 @@ class Account(Base):
         server_default=func.now(),
         onupdate=func.current_timestamp(),
     )
-    # user = relationship("UserModel", back_populates="account")
-    # talent = relationship("TalentModel", back_populates="account")
     
+
+Index("email_idx", Account.email)

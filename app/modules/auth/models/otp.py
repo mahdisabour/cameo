@@ -24,8 +24,8 @@ class OTPModel(Base):
         String(STRING_LENGTH_32),
         primary_key=True
     )
-    account_id: Mapped[str] = mapped_column(
-        ForeignKey("accounts.id", ondelete="SET NULL"),
+    account_email_fk: Mapped[str] = mapped_column(
+        ForeignKey("accounts.email", ondelete="CASCADE"),
     )
     otp_code: Mapped[int] = mapped_column()
     expiration_time: Mapped[DateTime] = mapped_column(

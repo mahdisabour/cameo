@@ -20,8 +20,7 @@ class OTPBaseSchema(OrmModeBaseModel):
     otp_code: int = Field(default_factory=lambda: randint(
         range_start, range_end
     ))
-    valid: bool = True
-    account_id: str
+    account_email_fk: str
 
 
 class OTPCreateSchema(OTPBaseSchema):
