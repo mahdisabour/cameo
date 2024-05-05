@@ -43,8 +43,8 @@ class TokenData(BaseModel):
 
 
 class AccountBaseSchema(OrmModeBaseModel):
-    username: str
     email: str 
+    username: str | None = Field(default_factory=lambda: f"username_{str(uuid4().hex)[:10]}")
     date_of_birth: datetime
     phone_number: str | None = None
     name: str | None = None

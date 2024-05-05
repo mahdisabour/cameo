@@ -69,8 +69,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             except IntegrityError as exc:
                 await self.db.rollback()
                 raise CustomDatabaseError(str(exc.orig))
-            except Exception as e:
-                print(f"{e=}")
+            except Exception:
                 raise Exception("internal server error")
         return db_obj
     
