@@ -4,6 +4,7 @@ from sqlalchemy import (
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import relationship
 
 from app.db.base_class import Base
 from app.core.constant_variables import (
@@ -12,16 +13,16 @@ from app.core.constant_variables import (
 ) 
 
 class Category(Base):
-    __tablename__ = "category"
+    __tablename__ = "categories"
 
     id: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32),
         primary_key=True
     )
-    parent: Mapped[str] = mapped_column(
-        ForeignKey("accounts.id", ondelete="SET NULL"),
-        nullable=True
+    parent_id: Mapped[str | None] = mapped_column(
+        ForeignKey("categories.id", ondelete="CASCADE"),
     )
+    parent: Mapped["Category"] = relationship()
     name: Mapped[str] = mapped_column(
         String(STRING_LENGTH_32)
     )

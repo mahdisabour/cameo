@@ -1,15 +1,15 @@
-"""auth_initial_tables
+"""initial_auth_models
 
-Revision ID: 6781bb33fde6
+Revision ID: f7a3511febb9
 Revises: 
-Create Date: 2024-05-05 18:32:39.913793
+Create Date: 2024-05-06 21:52:49.527034
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 
-revision = '6781bb33fde6'
+revision = 'f7a3511febb9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,11 +32,11 @@ def upgrade() -> None:
     sa.UniqueConstraint('username')
     )
     op.create_index('email_idx', 'accounts', ['email'], unique=False)
-    op.create_table('category',
+    op.create_table('categories',
     sa.Column('id', sa.String(length=32), nullable=False),
-    sa.Column('parent', sa.String(length=32), nullable=True),
+    sa.Column('parent_id', sa.String(length=32), nullable=True),
     sa.Column('name', sa.String(length=32), nullable=False),
-    sa.ForeignKeyConstraint(['parent'], ['accounts.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['parent_id'], ['categories.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('otps',
@@ -74,6 +74,17 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['account_id'], ['accounts.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+    op.execute("""
+        INSERT INTO categories
+            ( id, parent_id, name )
+        VALUES
+            ('1', NULL, 'Actors'), 
+            ('2', NULL, 'Athletes'), 
+            ('3', NULL, 'Comedians'), 
+            ('4', NULL, 'Creators'), 
+            ('5', NULL, 'Musicians'), 
+            ('6', NULL, 'Reality TV')
+    """)
     # ### end Alembic commands ###
 
 
@@ -82,7 +93,7 @@ def downgrade() -> None:
     op.drop_table('users')
     op.drop_table('talents')
     op.drop_table('otps')
-    op.drop_table('category')
+    op.drop_table('categories')
     op.drop_index('email_idx', table_name='accounts')
     op.drop_table('accounts')
     # ### end Alembic commands ###
